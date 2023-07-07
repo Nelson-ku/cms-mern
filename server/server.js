@@ -12,7 +12,13 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(require('./routes/record'));
+app.use(require('./routes/customers'));
+
+app.use((req,res,next)=>{
+    console.log(req.path,req.method)
+   next()
+});
+
 
 app.listen(port, ()=>{
     //connecting to the database
