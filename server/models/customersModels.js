@@ -21,16 +21,12 @@ const customerSchema= new Schema({
         type:String,
         required:true
     },
-    phonumber:{
+    phonenumber:{
         type:Number,
         required:true
     },
-    Address:{
+    address:{
         type:String,
-        required:true
-    },
-    joindate:{
-        type:Date,
         required:true
     } 
     
@@ -38,6 +34,6 @@ const customerSchema= new Schema({
 },{timestamps:true})// provide time when the entry was created
 
 
-module.exports =mongoose.model('Customers',customerSchema)
+module.exports =mongoose.model('customers',customerSchema)
 
 

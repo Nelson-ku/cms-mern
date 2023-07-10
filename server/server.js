@@ -1,29 +1,45 @@
+
+//perfoming imports
 const express =require('express');
 
 const app = express();
 
 const cors =require ('cors')
 
-require ('dotenv').config({path:'./config.env'});
+const mongoose =require('mongoose')
 
-const port =process.env.PORT||5000;
+require ('dotenv').config();
+
+
 
 app.use(cors());
 
 app.use(express.json());
 
-app.use(require('./routes/customers'));
+//configuring the routes
+const cutomersRoutes=require('./routes/customers');
 
 app.use((req,res,next)=>{
     console.log(req.path,req.method)
    next()
 });
 
+//utilizing routes 
 
-app.listen(port, ()=>{
-    //connecting to the database
-    dbo.connectToServer(function(err){
-        if(err) console.error(err);
-    });
-    console.log(`server is running on port :${port}`);
-});
+app.use('/api/customers',cutomersRoutes)
+
+//connecting to the mongodb through the URI
+mongoose.connect(process.env.mongo_uri)
+//listening to the requests once connected  to the db
+.then(()=>{
+    console.log('db connected successfully...')
+    //listening for requests 
+})
+.catch((error)=>{
+    console.log(error)
+})
+
+const port=process.env.port || 5000
+app.listen(port,()=>{
+    console.log(`server active at port ${port}`);
+})
