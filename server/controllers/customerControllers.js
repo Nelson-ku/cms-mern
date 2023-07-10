@@ -43,6 +43,8 @@ const deleteCustomer= async(req,res)=>{
         return res.status(404).json({error:'customer invalid'})
     }
 
+    const customers=await customerModel.findOneAndDelete({_id:id})
+
     if(!customers){
         return res.status(404).json({error:'the customer doesnt exist'})
     }
@@ -75,9 +77,10 @@ const updateCustomer=async(req,res)=>{
         return res.status(404).json({error:'invalid customer'})
     }
 
-    const workout=await customerModel.findByIdAndUpdate({_id:id},{
+    const customers=await customerModel.findByIdAndUpdate({_id:id},{
         ...req.body//get all the attributes in the customerModel
     })
+    
 
     if(!customers){
         return res.status(404).json({error:'invalid csutomer'})

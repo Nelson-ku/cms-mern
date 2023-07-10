@@ -15,7 +15,7 @@ const router=express.Router()
 
 router.get('/allCustomers',getCustomers)
 
-router.get('/singlecustomer/:id',getCustomer)
+router.get('/getcustomer/:id',getCustomer)
 
 router.post('/createcustomer',createCustomer)
 
