@@ -19,7 +19,8 @@ const customerSchema= new Schema({
     },
     email:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     phonenumber:{
         type:Number,
