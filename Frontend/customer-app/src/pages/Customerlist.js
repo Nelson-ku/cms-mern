@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CustomerForm from "../customerForm";
 import axios from "axios";
 import {
   Table,
@@ -33,8 +34,10 @@ const Customerlist = () => {
 
   //render the data
   return (
-    <div>
-      <h1>Customers Details</h1>
+    <>
+    <h2>Customers Details</h2>
+    <div className="home">
+      <div className="table">
       <Table>
         <TableHead>
           <TableRow>
@@ -54,10 +57,10 @@ const Customerlist = () => {
               <strong>Address</strong>
             </TableCell>
             <TableCell>
-              <strong>update</strong>
+              <strong>Update</strong>
             </TableCell>
             <TableCell>
-              <strong>delete</strong>
+              <strong>Delete</strong>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -79,12 +82,12 @@ const Customerlist = () => {
           ))}
         </TableBody>
       </Table>
-      <h3>
-        <Button variant="contained" disableElevation>
-          Create-Customer
-        </Button>
-      </h3>
+      </div>
+      <br/>
+      <h2>Create a new customer account</h2>
+    <CustomerForm/>
     </div>
+    </>
   );
 };
 export default Customerlist;
