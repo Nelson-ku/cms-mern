@@ -33,8 +33,7 @@ const CustomerForm = () => {
         email,
         phonenumber,
         address,
-      })
-      .then((data) => {
+      }).then((data) => {
         console.log("Data added successfully");
         setFirstName("");
         setLastName("");
@@ -43,7 +42,7 @@ const CustomerForm = () => {
         setPhonenumber("");
         setError(null);
       });
-
+      
     // console.log("workout added", json); //check the addition
   };
 

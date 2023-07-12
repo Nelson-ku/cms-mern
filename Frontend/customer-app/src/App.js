@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="">
       <Navbar/>
+      <br/>
       <Search/>
        <Customerlist/>
     </div>
