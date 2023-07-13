@@ -21,7 +21,7 @@ router.post('/createcustomer',createCustomer)
 
 router.delete('/deletecustomer/:id',deleteCustomer)
 
-router.patch('/updateCustomer/:id',updateCustomer)
+router.patch('/updatecustomer/:id',updateCustomer)
 
 
 //exporting the routes for use

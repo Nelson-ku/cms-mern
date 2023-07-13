@@ -16,7 +16,6 @@ const CustomerForm = () => {
     e.preventDefault();
     console.log(firstname, lastname, email, phonenumber, address);
 
-    
     const data = {
       firstname: "Alvin1",
       lastname: "Camil2",
@@ -33,7 +32,8 @@ const CustomerForm = () => {
         email,
         phonenumber,
         address,
-      }).then((data) => {
+      })
+      .then((data) => {
         console.log("Data added successfully");
         setFirstName("");
         setLastName("");
@@ -42,13 +42,14 @@ const CustomerForm = () => {
         setPhonenumber("");
         setError(null);
       });
-      
+
     // console.log("workout added", json); //check the addition
   };
 
   return (
     //creating the form
     <form onSubmit={handleSubmit}>
+      <h2>Create a new customer account</h2>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -100,9 +101,12 @@ const CustomerForm = () => {
             Create Customer
           </Button>
         </Grid>
+        
       </Grid>
     </form>
+    
   );
+  
 };
 
 export default CustomerForm;

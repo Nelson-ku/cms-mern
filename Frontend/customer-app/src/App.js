@@ -12,6 +12,7 @@ function App() {
       <br/>
       <Search/>
        <Customerlist/>
+       
     </div>
   );
 }

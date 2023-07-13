@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import CustomerForm from "../customerForm";
+import CustomerForm from "../components/customerForm";
+import HandleSubmit from "../components/HandleSubmit";
 import axios from "axios";
 import {
   Table,
@@ -35,14 +36,10 @@ const Customerlist = () => {
 
   //delete function
   const handleClick = async (id) => {
-
     await axios
-      .delete(
-        "http://localhost:8000/api/customers/deletecustomer/" +id,
-        {
-          method: "DELETE",
-        }
-      )
+      .delete("http://localhost:8000/api/customers/deletecustomer/" + id, {
+        method: "DELETE",
+      })
       .then((response) => {
         if (response.status === 200) {
           console.log("customer deleted succesffully");
@@ -94,29 +91,37 @@ const Customerlist = () => {
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>{customer.address}</TableCell>
                   <TableCell>
-                    <Button variant="contained">Update</Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => HandleSubmit(customer)}
+                    >
+                      
+                      Update
+                    </Button>
                   </TableCell>
                   <TableCell>
-                    <Button variant="outlined" onClick={()=>handleClick(customer._id)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleClick(customer._id)}
+                    >
                       Delete
                     </Button>
                   </TableCell>
                 </TableRow>
-
-                
               ))}
             </TableBody>
           </Table>
         </div>
-        <br />
-        <h2>Create a new customer account</h2>
-        <CustomerForm/>
-        
+        <CustomerForm />    
       </div>
-      
     </>
-      
   );
 };
 
-export default Customerlist;
+
+
+
+export default Customerlist ;
+
+//create a function to handle onclick where the function gets the id and link parsing it to the next function handle submit
+// which will perform a get requests for that specific user and then using that perfom an update request.
