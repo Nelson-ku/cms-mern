@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CustomerForm from "../components/customerForm";
-import HandleSubmit from "../components/HandleSubmit";
+import Search from '../components/search';
+import Navbar from '../components/navbar';
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -52,7 +54,10 @@ const Customerlist = () => {
 
   //rendering
   return (
-    <>
+    <> 
+       <Navbar/>
+       <br/>
+       <Search/>
       <h2>Customers Details</h2>
       <div className="home">
         <div className="table">
@@ -91,13 +96,13 @@ const Customerlist = () => {
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>{customer.address}</TableCell>
                   <TableCell>
-                    <Button
+                    {console.log("{customer.id",customer._id )}
+                    <Link
                       variant="contained"
-                      onClick={() => HandleSubmit(customer)}
-                    >
-                      
+                       to={`/update/${customer._id}`}
+                    > 
                       Update
-                    </Button>
+                    </Link>
                   </TableCell>
                   <TableCell>
                     <Button
