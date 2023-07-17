@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CustomerForm from "../components/customerForm";
-import Search from '../components/search';
 import Navbar from '../components/navbar';
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -11,10 +10,17 @@ import {
   TableHead,
   TableRow,
   Button,
+  TextField,
 } from "@mui/material";
+
+
+//create a state variable for the search;
+
+
 
 const Customerlist = () => {
   const [customers, setCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers]=useState(customers);
 
   const getCustomers = async () => {
     await axios
@@ -35,6 +41,14 @@ const Customerlist = () => {
   useEffect(() => {
     getCustomers();
   }, []);
+
+  //search function
+const searchCustomers=(query)=>{
+  const filtered=customers.filter((customer)=>
+    customer.email.includes(query)
+  );
+  setFilteredCustomers(filtered);
+};
 
   //delete function
   const handleClick = async (id) => {
@@ -57,7 +71,13 @@ const Customerlist = () => {
     <> 
        <Navbar/>
        <br/>
-       <Search/>
+            <TextField
+        type="text"
+        placeholder="Search"
+        onChange={searchCustomers}
+        style={{ marginRight: '10px' }}
+      />
+
       <h2>Customers Details</h2>
       <div className="home">
         <div className="table">
@@ -97,12 +117,15 @@ const Customerlist = () => {
                   <TableCell>{customer.address}</TableCell>
                   <TableCell>
                     {console.log("{customer.id",customer._id )}
+                   
                     <Link
                       variant="contained"
                        to={`/update/${customer._id}`}
                     > 
                       Update
                     </Link>
+                    
+
                   </TableCell>
                   <TableCell>
                     <Button
