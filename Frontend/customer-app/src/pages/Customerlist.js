@@ -20,7 +20,7 @@ import {
 
 const Customerlist = () => {
   const [customers, setCustomers] = useState([]);
-  const [filteredCustomers, setFilteredCustomers]=useState(customers);
+  const [filteredCustomers, setFilteredCustomers]=useState('');
 
   const getCustomers = async () => {
     await axios
@@ -42,13 +42,7 @@ const Customerlist = () => {
     getCustomers();
   }, []);
 
-  //search function
-const searchCustomers=(query)=>{
-  const filtered=customers.filter((customer)=>
-    customer.email.includes(query)
-  );
-  setFilteredCustomers(filtered);
-};
+ 
 
   //delete function
   const handleClick = async (id) => {
@@ -74,8 +68,8 @@ const searchCustomers=(query)=>{
             <TextField
         type="text"
         placeholder="Search"
-        onChange={searchCustomers}
-        style={{ marginRight: '10px' }}
+        onChange={(e)=>setFilteredCustomers(e.target.value)}
+
       />
 
       <h2>Customers Details</h2>
@@ -108,7 +102,12 @@ const searchCustomers=(query)=>{
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.map((customer) => (
+              {customers.filter((customer)=>{
+                 return filteredCustomers.toLowerCase ===''
+                 ? customer
+                 : customer.email.includes(filteredCustomers);
+
+              } ).map((customer) => (
                 <TableRow key={customer.id}>
                   <TableCell>{customer.firstname}</TableCell>
                   <TableCell>{customer.lastname}</TableCell>
