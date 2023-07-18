@@ -1,7 +1,7 @@
 import { Button, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Navbar from "../components/navbar";
+import Navbar from "./navbar";
 import { useParams } from "react-router-dom";
 
 
@@ -52,10 +52,9 @@ const UpdateCustomer = () => {
   };
 
   return (
-    <div>
+    <div className="Customer-details">
       <Navbar />
       <br />
-      
       <form onSubmit={handleSubmit}>
         <h3>Updating customer</h3>
         <Grid container spacing={2}>

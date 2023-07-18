@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomerForm from "../components/customerForm";
-import Navbar from '../components/navbar';
+import Navbar from "../components/navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
@@ -13,14 +13,11 @@ import {
   TextField,
 } from "@mui/material";
 
-
 //create a state variable for the search;
-
-
 
 const Customerlist = () => {
   const [customers, setCustomers] = useState([]);
-  const [filteredCustomers, setFilteredCustomers]=useState('');
+  const [filteredCustomers, setFilteredCustomers] = useState("");
 
   const getCustomers = async () => {
     await axios
@@ -42,8 +39,6 @@ const Customerlist = () => {
     getCustomers();
   }, []);
 
- 
-
   //delete function
   const handleClick = async (id) => {
     await axios
@@ -62,14 +57,14 @@ const Customerlist = () => {
 
   //rendering
   return (
-    <> 
-       <Navbar/>
-       <br/>
-            <TextField
+    <div className="Customer-details">
+      <Navbar />
+      <br />
+      <TextField
         type="text"
         placeholder="Search"
-        onChange={(e)=>setFilteredCustomers(e.target.value)}
-
+        className="search"
+        onChange={(e) => setFilteredCustomers(e.target.value)}
       />
 
       <h2>Customers Details</h2>
@@ -102,53 +97,47 @@ const Customerlist = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.filter((customer)=>{
-                 return filteredCustomers.toLowerCase ===''
-                 ? customer
-                 : customer.email.includes(filteredCustomers);
+              {customers
+                .filter((customer) => {
+                  return filteredCustomers.toLowerCase === ""
+                    ? customer
+                    : customer.email.includes(filteredCustomers);
+                })
+                .map((customer) => (
+                  <TableRow key={customer.id}>
+                    <TableCell>{customer.firstname}</TableCell>
+                    <TableCell>{customer.lastname}</TableCell>
+                    <TableCell>{customer.phonenumber}</TableCell>
+                    <TableCell>{customer.email}</TableCell>
+                    <TableCell>{customer.address}</TableCell>
+                    <TableCell>
+                      {console.log("{customer.id", customer._id)}
 
-              } ).map((customer) => (
-                <TableRow key={customer.id}>
-                  <TableCell>{customer.firstname}</TableCell>
-                  <TableCell>{customer.lastname}</TableCell>
-                  <TableCell>{customer.phonenumber}</TableCell>
-                  <TableCell>{customer.email}</TableCell>
-                  <TableCell>{customer.address}</TableCell>
-                  <TableCell>
-                    {console.log("{customer.id",customer._id )}
-                   
-                    <Link
-                      variant="contained"
-                       to={`/update/${customer._id}`}
-                    > 
-                      Update
-                    </Link>
-                    
-
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleClick(customer._id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      <Link variant="contained" to={`/update/${customer._id}`}>
+                        Edit
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleClick(customer._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
-        <CustomerForm />    
+        <CustomerForm />
       </div>
-    </>
+      <div />
+    </div>
   );
 };
 
-
-
-
-export default Customerlist ;
+export default Customerlist;
 
 //create a function to handle onclick where the function gets the id and link parsing it to the next function handle submit
 // which will perform a get requests for that specific user and then using that perfom an update request.
