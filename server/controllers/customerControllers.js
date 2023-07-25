@@ -1,14 +1,16 @@
 const customerModel=require('../models/customersModels')
+const express =require('express');
 
 const mongoose=require('mongoose')
 
 const nodemailer=require('nodemailer')
 
-
+const bodyParser=require("body-parser");
 //function to get all customers
 
+const app = express();
 
-
+app.use(bodyParser.json());
 
 const loginUser=async(req,res)=>{
     const{firstname, password}=req.body
@@ -81,13 +83,13 @@ const createCustomer=async(req,res)=>{
             {
                 service:'Gmail',
                 auth:{
-                    user:'nelsonoginga2018@gmail.com',
-                    pass:'8163Nell'
+                    user:'oginganelson2018@gmail.com',
+                    pass:'tfitwuobcvzqkbhf'
                 },
             });
     
             const mailOptions={
-                from:"nelsonoginga2018@gmail.com",
+                from:"oginganelson2018@gmail.com",
                 to:email,
                 subject:'Welcome to our CRM',
                 text:`Hello ${firstname},\n\n your account has been created successfully.\n\nLogin details: \n username:${firstname}\nPassword:${password}\n\n Thank you!`,
@@ -101,8 +103,10 @@ const createCustomer=async(req,res)=>{
             }catch(error){
                 console.error('error sending email',error);
             }
-            sendLoginEmail(email,firstname,password); 
+            
     };
+
+    sendLoginEmail(email,firstname,password); 
     
     try{
         const customers= await customerModel.create({firstname,lastname,email,role,password,phonenumber,address})
