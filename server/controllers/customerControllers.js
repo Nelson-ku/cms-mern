@@ -2,7 +2,25 @@ const customerModel=require('../models/customersModels')
 
 const mongoose=require('mongoose')
 
+const nodemailer=require('nodemailer')
+
+
 //function to get all customers
+
+
+
+
+const loginUser=async(req,res)=>{
+    const{firstname, password}=req.body
+    const user= await customerModel.findOne({firstname,password}).exec();
+    if (user){
+        res.json({role:user.role});
+    }else {
+        //return error msg
+        res.status(401).json({message:'credentials invalid'})
+    }
+
+};
 
 const getCustomers=async(req,res)=>{
     //getting all clients from the last registered 
@@ -55,17 +73,54 @@ const deleteCustomer= async(req,res)=>{
 //creating a customer
 
 const createCustomer=async(req,res)=>{
-    console.log('creating customer')
-    const{firstname,lastname,email,phonenumber,address}=req.body
+    console.log('creating customer');
+    const{firstname,lastname,email,password,role,phonenumber,address}=req.body;
+
+    const sendLoginEmail=async(email,firstname,password)=>{
+        const transporter=nodemailer.createTransport(
+            {
+                service:'Gmail',
+                auth:{
+                    user:'nelsonoginga2018@gmail.com',
+                    pass:'8163Nell'
+                },
+            });
+    
+            const mailOptions={
+                from:"nelsonoginga2018@gmail.com",
+                to:email,
+                subject:'Welcome to our CRM',
+                text:`Hello ${firstname},\n\n your account has been created successfully.\n\nLogin details: \n username:${firstname}\nPassword:${password}\n\n Thank you!`,
+    
+    
+            };
+    
+            try{
+                await transporter.sendMail(mailOptions);
+                console.log('email sent successfully');
+            }catch(error){
+                console.error('error sending email',error);
+            }
+            sendLoginEmail(email,firstname,password); 
+    };
     
     try{
-        const customers= await customerModel.create({firstname,lastname,email,phonenumber,address})
+        const customers= await customerModel.create({firstname,lastname,email,role,password,phonenumber,address})
         res.status(200).json(customers)
+
     }
     catch(error){
         res.status(400).json({error:error.message})
-    }
+    };
+
+    //send user email and details
+   
+    
+
+
 }
+
+
 
 
 //update a workout
@@ -98,5 +153,6 @@ module.exports={
     getCustomer,
     getCustomers,
     deleteCustomer,
-    updateCustomer
+    updateCustomer,
+    loginUser
 }

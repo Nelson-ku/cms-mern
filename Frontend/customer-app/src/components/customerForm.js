@@ -10,6 +10,8 @@ const CustomerForm = () => {
   const [phonenumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const[password, setPassword]=useState("");
+  const[role,setRole]=useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -21,6 +23,8 @@ const CustomerForm = () => {
       lastname: "Camil2",
       email: "Alvin@2221gmail.com",
       phonenumber: "07456043700",
+      password:"hsrutryi2",
+      role:'customer',
       address: "Mombasa1",
     };
 
@@ -30,6 +34,8 @@ const CustomerForm = () => {
         firstname,
         lastname,
         email,
+        role,
+        password,
         phonenumber,
         address,
       })
@@ -39,7 +45,9 @@ const CustomerForm = () => {
         setLastName("");
         setEmail("");
         setAddress("");
+        setRole("");
         setPhonenumber("");
+        setPassword("")
         setError(null);
       });
 
@@ -76,6 +84,24 @@ const CustomerForm = () => {
             fullWidth
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Role"
+            variant="outlined"
+            fullWidth
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Set password"
+            variant="outlined"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>

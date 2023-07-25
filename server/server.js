@@ -2,11 +2,15 @@
 //perfoming imports
 const express =require('express');
 
+const bodyParser=require("body-parser");
+
 const app = express();
 
 const cors =require ('cors')
 
 const mongoose =require('mongoose')
+
+
 
 require ('dotenv').config();
 
@@ -16,6 +20,8 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use(bodyParser.json());
+
 //configuring the routes
 const cutomersRoutes=require('./routes/customers');
 
@@ -23,6 +29,7 @@ app.use((req,res,next)=>{
     console.log(req.path,req.method)
    next()
 });
+
 
 //utilizing routes 
 

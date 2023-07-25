@@ -12,6 +12,8 @@ const UpdateCustomer = () => {
     lastname: '',
     phonenumber: '',
     email: '',
+    password:'',
+    role:'',
     address: ''
   });
 
@@ -44,6 +46,8 @@ const UpdateCustomer = () => {
         lastname: '',
         phonenumber: '',
         email: '',
+        password:'',
+        role:'',
         address: ''
       });
     } catch (error) {
@@ -78,6 +82,17 @@ const UpdateCustomer = () => {
               onChange={handleChange}
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Role"
+              variant="outlined"
+              fullWidth
+              name="role"
+              value={customer.role}
+              onChange={handleChange}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <TextField
               label="Email"
@@ -97,6 +112,17 @@ const UpdateCustomer = () => {
               value={customer.phonenumber}
               onChange={handleChange}
             />
+
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+            label="password"
+            variant="outlined"
+            name="password"
+            value={customer.password}
+            onChange={handleChange} 
+            />
+  
           </Grid>
           <Grid item xs={12}>
             <TextField

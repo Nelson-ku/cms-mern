@@ -6,12 +6,15 @@ const{
     getCustomer,
     getCustomers,
     deleteCustomer,
-    updateCustomer
+    updateCustomer,
+    loginUser
 }=require('../controllers/customerControllers')
 
 //creating an instance of a router
 
 const router=express.Router()
+
+router.post('/login',loginUser)
 
 router.get('/allCustomers',getCustomers)
 
