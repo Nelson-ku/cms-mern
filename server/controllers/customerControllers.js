@@ -1,11 +1,18 @@
 const customerModel=require('../models/customersModels')
 const express =require('express');
 
-const mongoose=require('mongoose')
+const mongoose=require('mongoose');
+
+const jwt=require('jsonwebtoken');
+
+const config=require('../jwt-token/jwt-token')
 
 const nodemailer=require('nodemailer')
 
 const bodyParser=require("body-parser");
+const jwtToken = require('../jwt-token/jwt-token');
+
+
 //function to get all customers
 
 const app = express();
@@ -15,12 +22,35 @@ app.use(bodyParser.json());
 const loginUser=async(req,res)=>{
     const{firstname, password}=req.body
     const user= await customerModel.findOne({firstname,password}).exec();
+
+    
+      const payload={user};
+    //     user:{
+    //          firstname:user.firstname,
+    //          lastname:user.lastname,
+    //          role:user.role,
+    //          email:user.email,
+    //         password:user.password,
+
+    //      }
+    // };
+
+    const token=jwt.sign(payload, config.jwtSecret,{
+       expiresIn:config.jwtExpiration, 
+       
+    });
     if (user){
-        res.json({role:user.role});
+        res.status(200).json({status:"Success", data:user, acessToken:token});
     }else {
         //return error msg
         res.status(401).json({message:'credentials invalid'})
     }
+    
+       
+ 
+    // console.log(token);
+    
+    // console.log(payload);
 
 };
 

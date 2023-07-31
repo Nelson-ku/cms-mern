@@ -31,9 +31,12 @@ const Login = () => {
       if (response.status===200) {
 
         const {role} = await response.data;
+        const {token}=await response.accessToken;
 
         //store the role in local storage
         localStorage.setItem('role',role);
+
+        localStorage.setItem('token',token);
 
         //redirect the user based on their role
 
@@ -46,7 +49,7 @@ const Login = () => {
         console.log("login Failed");
       }
     } catch (error) {
-      console.error("login error", error);
+      console.log("login error", error);
     }
   };
 

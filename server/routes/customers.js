@@ -1,5 +1,6 @@
-const customers= require('../models/customersModels')
 const express =require('express')
+
+const verifyToken=require('../jwt-token/jwtmiddleware')
 
 const{
     createCustomer,
@@ -14,17 +15,17 @@ const{
 
 const router=express.Router()
 
-router.post('/login',loginUser)
+router.post('/login', loginUser)
 
 router.get('/allCustomers',getCustomers)
 
-router.get('/getcustomer/:id',getCustomer)
+router.get('/getcustomer/:id',verifyToken,getCustomer)
 
 router.post('/createcustomer',createCustomer)
 
-router.delete('/deletecustomer/:id',deleteCustomer)
+router.delete('/deletecustomer/:id',verifyToken,deleteCustomer)
 
-router.patch('/updatecustomer/:id',updateCustomer)
+router.patch('/updatecustomer/:id',verifyToken,updateCustomer)
 
 
 //exporting the routes for use
