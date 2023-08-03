@@ -13,6 +13,7 @@ const CustomerForm = () => {
   const[password, setPassword]=useState("");
   const[role,setRole]=useState("");
   const [error, setError] = useState("");
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,9 +29,13 @@ const CustomerForm = () => {
       address: "Mombasa1",
     };
 
+    const token =localStorage.getItem("token");
+
     const response = await axios
-      .post("http://localhost:8000/api/customers/createcustomer", {
-        headers: { "Content-Type": "aplication/json" },
+      .post("http://localhost:8000/api/customers/createcustomer",{
+        headers:{
+          Authorization: `${token}`,
+        },
         firstname,
         lastname,
         email,

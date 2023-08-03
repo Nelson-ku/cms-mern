@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Navbar from "./navbar";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 
 
 import { Button, Card, CardActions, Grid, TextField } from "@mui/material";
+import UpdateCustomer from "./HandleSubmit";
 // import { CardActions } from "@material-ui/core";
 
 const Login = () => {
-  const [firstname, setFirstname] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
   
@@ -21,22 +23,34 @@ const Login = () => {
     try {
       //sen login request  and handle the login request
 
-      const response = await axios.post(
+      const res = await axios.post(
         "http://localhost:8000/api/customers/login",{
-            firstname,
-            password
+            email,
+            password,
+            
         }
       );
  
-      if (response.status===200) {
+      if (res.status===200) {
 
-        const {role} = await response.data;
-        const {token}=await response.accessToken;
+        const { accessToken} = await res.data;
+        // console.log(res.acessToken , 'wertyuiytui');
+        const token=res.data.acessToken;
 
-        //store the role in local storage
-        localStorage.setItem('role',role);
+    
+
+        const role=res.data.data.role;
+        console.log('token',res.data.acessToken);
+
+        //store the token in local storage
+ 
 
         localStorage.setItem('token',token);
+        localStorage.setItem('role',role);
+
+        
+       
+        console.log(token);
 
         //redirect the user based on their role
 
@@ -57,6 +71,7 @@ const Login = () => {
     <div>
       <Navbar />
       <br />
+     
 
       <Card>
         <Grid container spacing={2}>
@@ -65,10 +80,10 @@ const Login = () => {
             <Grid xs={12}>
               <TextField
                 type="text"
-                placeholder="firstname"
-                value={firstname}
+                placeholder="Email"
+                value={email}
                 on
-                onChange={(e) => setFirstname(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <br />

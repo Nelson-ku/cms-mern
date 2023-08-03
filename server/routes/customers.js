@@ -17,11 +17,11 @@ const router=express.Router()
 
 router.post('/login', loginUser)
 
-router.get('/allCustomers',getCustomers)
+router.get('/allCustomers',verifyToken, getCustomers)
 
 router.get('/getcustomer/:id',verifyToken,getCustomer)
 
-router.post('/createcustomer',createCustomer)
+router.post('/createcustomer',verifyToken,createCustomer)
 
 router.delete('/deletecustomer/:id',verifyToken,deleteCustomer)
 

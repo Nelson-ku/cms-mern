@@ -18,10 +18,17 @@ import {
 const Customerlist = () => {
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState("");
+  const token = localStorage.getItem("token");
+
+
 
   const getCustomers = async () => {
     await axios
-      .get("http://localhost:8000/api/customers/allCustomers")
+      .get("http://localhost:8000/api/customers/allCustomers", {
+        headers:{
+          Authorization: `${token}`,
+        },
+      })
       .then((response) => {
         setCustomers(response.data);
       })
@@ -43,6 +50,9 @@ const Customerlist = () => {
   const handleClick = async (id) => {
     await axios
       .delete("http://localhost:8000/api/customers/deletecustomer/" + id, {
+        headers:{
+          Authorization: `${token}`,
+        },
         method: "DELETE",
       })
       .then((response) => {

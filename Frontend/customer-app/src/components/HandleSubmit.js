@@ -4,23 +4,31 @@ import { useEffect, useState } from "react";
 import Navbar from "./navbar";
 import { useParams } from "react-router-dom";
 
-
 const UpdateCustomer = () => {
   const { id } = useParams();
+  const token = localStorage.getItem("token");
+  console.log(token);
   const [customer, setCustomer] = useState({
-    firstname: '',
-    lastname: '',
-    phonenumber: '',
-    email: '',
-    password:'',
-    role:'',
-    address: ''
+    firstname: "",
+    lastname: "",
+    phonenumber: "",
+    email: "",
+    password: "",
+    role: "",
+    address: "",
   });
 
   useEffect(() => {
     const getCustomer = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/customers/getcustomer/${id}`);
+        const response = await axios.get(
+          `http://localhost:8000/api/customers/getcustomer/${id}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
         const customerData = response.data;
         setCustomer(customerData);
       } catch (error) {
@@ -39,16 +47,25 @@ const UpdateCustomer = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.patch(`http://localhost:8000/api/customers/updatecustomer/${id}`, customer);
-      console.log('Customer updated successfully');
+      const response = await axios.patch(
+        `http://localhost:8000/api/customers/updatecustomer/${id}`,
+        customer,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      console.log("Customer updated successfully");
+
       setCustomer({
-        firstname: '',
-        lastname: '',
-        phonenumber: '',
-        email: '',
-        password:'',
-        role:'',
-        address: ''
+        firstname: "",
+        lastname: "",
+        phonenumber: "",
+        email: "",
+        password: "",
+        role: "",
+        address: "",
       });
     } catch (error) {
       console.log(error);
@@ -112,17 +129,15 @@ const UpdateCustomer = () => {
               value={customer.phonenumber}
               onChange={handleChange}
             />
-
           </Grid>
           <Grid item xs={12}>
             <TextField
-            label="password"
-            variant="outlined"
-            name="password"
-            value={customer.password}
-            onChange={handleChange} 
+              label="password"
+              variant="outlined"
+              name="password"
+              value={customer.password}
+              onChange={handleChange}
             />
-  
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -147,94 +162,13 @@ const UpdateCustomer = () => {
 
 export default UpdateCustomer;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // const HandleSubmit = () => {
 //   const [firstname, setFirstName] = useState("");
 //   const [lastname, setLastName] = useState("");
 //   const [phonenumber, setPhonenumber] = useState("");
 //   const [email, setEmail] = useState("");
 //   const [address, setAddress] = useState("");
- 
+
 //   const HandleUpdate = async () => {
 //     const { id } = useParams();
 //     useEffect(() => {
@@ -279,15 +213,9 @@ export default UpdateCustomer;
 //     //   console.log(response);
 //     // };
 
-
-     
 //   },
 
-
-  
 //   []);
-
-
 
 //     return (
 //       <div>
@@ -400,4 +328,3 @@ export default UpdateCustomer;
 //
 //   );
 //
-

@@ -20,8 +20,8 @@ const app = express();
 app.use(bodyParser.json());
 
 const loginUser=async(req,res)=>{
-    const{firstname, password}=req.body
-    const user= await customerModel.findOne({firstname,password}).exec();
+    const{email, password}=req.body
+    const user= await customerModel.findOne({email,password}).exec();
 
     
       const payload={user};
@@ -39,6 +39,7 @@ const loginUser=async(req,res)=>{
        expiresIn:config.jwtExpiration, 
        
     });
+
     if (user){
         res.status(200).json({status:"Success", data:user, acessToken:token});
     }else {
