@@ -1,9 +1,15 @@
 import { Button, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
+import { createCustomer } from "../redux/actions";
+import { useDispatch } from 'react-redux';
 
 const CustomerForm = () => {
   //this for creating the fields for the attributes to be filled in
+ 
+
+  const dispatch= useDispatch();
+
 
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
@@ -13,7 +19,7 @@ const CustomerForm = () => {
   const[password, setPassword]=useState("");
   const[role,setRole]=useState("");
   const [error, setError] = useState("");
-  
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +36,8 @@ const CustomerForm = () => {
     };
 
     const token =localStorage.getItem("token");
+ 
+
 
     const response = await axios
       .post("http://localhost:8000/api/customers/createcustomer",{
@@ -55,11 +63,12 @@ const CustomerForm = () => {
         setPassword("")
         setError(null);
       });
-
+     const customerData= response.data;
+     dispatch(createCustomer(customerData))//store login state
     // console.log("workout added", json); //check the addition
   };
 
-  return (
+  return 85(
     //creating the form
     <form onSubmit={handleSubmit}>
       <h2>Create a new customer account</h2>

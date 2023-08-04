@@ -3,11 +3,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "./navbar";
 import { useParams } from "react-router-dom";
+import {useDispatch,useSelector } from 'react-redux';
+import { getCustomer1, updateCustomer } from "../redux/actions";
 
 const UpdateCustomer = () => {
+  const dispatch= useDispatch();
   const { id } = useParams();
   const token = localStorage.getItem("token");
   console.log(token);
+  const reduxCustomer = useSelector((state) => state.customer.customerData);
   const [customer, setCustomer] = useState({
     firstname: "",
     lastname: "",
@@ -31,13 +35,15 @@ const UpdateCustomer = () => {
         );
         const customerData = response.data;
         setCustomer(customerData);
+        dispatch(getCustomer1(customerData));
       } catch (error) {
         console.log(error);
       }
     };
 
     getCustomer();
-  }, [id]);
+  }, [dispatch,token,id]);
+
 
   const handleChange = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
@@ -67,10 +73,18 @@ const UpdateCustomer = () => {
         role: "",
         address: "",
       });
+      const customerData=response.data;
+      dispatch(updateCustomer(customerData));//store update operation
     } catch (error) {
       console.log(error);
     }
+    
   };
+  useEffect(()=>{
+    setCustomer([reduxCustomer])
+},[reduxCustomer]);
+
+
 
   return (
     <div className="Customer-details">

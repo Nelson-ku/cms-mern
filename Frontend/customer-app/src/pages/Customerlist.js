@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState , } from "react";
 import CustomerForm from "../components/customerForm";
 import Navbar from "../components/navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+
+
+
 import {
   Table,
   TableBody,
@@ -13,24 +18,28 @@ import {
   TextField,
 } from "@mui/material";
 
-//create a state variable for the search;
+import { deleteCustomer, getCustomers1 } from "../redux/actions";
 
+//create a state variable for the search;
 const Customerlist = () => {
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState({});
   const [filteredCustomers, setFilteredCustomers] = useState("");
   const token = localStorage.getItem("token");
 
+  const reduxCustomer = useSelector((state) => state.customers.customerData);
+  const dispatch = useDispatch();
 
-
-  const getCustomers = async () => {
+  const getCustomers =  async () => {
     await axios
       .get("http://localhost:8000/api/customers/allCustomers", {
-        headers:{
+        headers: {
           Authorization: `${token}`,
         },
       })
       .then((response) => {
         setCustomers(response.data);
+        const customerData = response.data;
+        dispatch(getCustomers1(customerData.id)); //redux for collecting the available data
       })
       .catch((error) => {
         console.error(
@@ -44,19 +53,25 @@ const Customerlist = () => {
 
   useEffect(() => {
     getCustomers();
-  }, []);
+  },[getCustomers]);
+
+  useEffect(()=>{
+    setCustomers([reduxCustomer])
+},[reduxCustomer]);
 
   //delete function
   const handleClick = async (id) => {
     await axios
       .delete("http://localhost:8000/api/customers/deletecustomer/" + id, {
-        headers:{
+        headers: {
           Authorization: `${token}`,
         },
         method: "DELETE",
       })
       .then((response) => {
         if (response.status === 200) {
+          const customerData = response.data;
+          dispatch(deleteCustomer(customerData.id)); //redux for deletion
           console.log("customer deleted succesffully");
         } else {
           console.log("deletion omitted");

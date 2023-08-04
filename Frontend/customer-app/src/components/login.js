@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 
 import { Button, Card, CardActions, Grid, TextField } from "@mui/material";
-import UpdateCustomer from "./HandleSubmit";
+
 // import { CardActions } from "@material-ui/core";
 
 const Login = () => {
@@ -33,7 +33,7 @@ const Login = () => {
  
       if (res.status===200) {
 
-        const { accessToken} = await res.data;
+
         // console.log(res.acessToken , 'wertyuiytui');
         const token=res.data.acessToken;
 
