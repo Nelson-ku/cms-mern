@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useState , } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import CustomerForm from "../components/customerForm";
 import Navbar from "../components/navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-
-
 
 import {
   Table,
@@ -20,64 +17,58 @@ import {
 
 import { deleteCustomer, getCustomers1 } from "../redux/actions";
 
-//create a state variable for the search;
 const Customerlist = () => {
-  const [customers, setCustomers] = useState({});
+  const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState("");
   const token = localStorage.getItem("token");
 
   const reduxCustomer = useSelector((state) => state.customers.customerData);
   const dispatch = useDispatch();
 
-  const getCustomers =  async () => {
-    await axios
-      .get("http://localhost:8000/api/customers/allCustomers", {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((response) => {
-        setCustomers(response.data);
-        const customerData = response.data;
-        dispatch(getCustomers1(customerData.id)); //redux for collecting the available data
-      })
-      .catch((error) => {
-        console.error(
-          "there was a problem fetching data of the customers",
-          error
-        );
-      });
-  };
-
-  //fetching data from the backend server
+  const getCustomers = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/customers/allCustomers",
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setCustomers(response.data);
+      dispatch(getCustomers1(response.data.id)); //redux for collecting the available data
+    } catch (error) {
+      console.error("There was a problem fetching data of the customers", error);
+    }
+  }, [dispatch, token]);
 
   useEffect(() => {
     getCustomers();
-  },[getCustomers]);
+  }, [getCustomers]);
 
-  useEffect(()=>{
-    setCustomers([reduxCustomer])
-},[reduxCustomer]);
+  useEffect(() => {
+    setCustomers(reduxCustomer); // Instead of wrapping in an array, use the object itself
+  }, [reduxCustomer]);
 
   //delete function
   const handleClick = async (id) => {
-    await axios
-      .delete("http://localhost:8000/api/customers/deletecustomer/" + id, {
-        headers: {
-          Authorization: `${token}`,
-        },
-        method: "DELETE",
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const customerData = response.data;
-          dispatch(deleteCustomer(customerData.id)); //redux for deletion
-          console.log("customer deleted succesffully");
-        } else {
-          console.log("deletion omitted");
+    try {
+      await axios.delete(
+        "http://localhost:8000/api/customers/deletecustomer/" + id,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+          method: "DELETE",
         }
-        getCustomers();
-      });
+      );
+
+      dispatch(deleteCustomer(id)); //redux for deletion
+      console.log("Customer deleted successfully");
+      getCustomers();
+    } catch (error) {
+      console.error("There was a problem deleting the customer", error);
+    }
   };
 
   //rendering
@@ -101,35 +92,19 @@ const Customerlist = () => {
                 <TableCell>
                   <strong>FirstName</strong>
                 </TableCell>
-                <TableCell>
-                  <strong>LastName</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Phone</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Email</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Address</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Update</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Delete</strong>
-                </TableCell>
+               
               </TableRow>
             </TableHead>
             <TableBody>
               {customers
-                .filter((customer) => {
-                  return filteredCustomers.toLowerCase === ""
-                    ? customer
-                    : customer.email.includes(filteredCustomers);
-                })
+                .filter((customer) =>
+                  filteredCustomers.toLowerCase() === ""
+                    ? true
+                    : customer.email.includes(filteredCustomers)
+                )
                 .map((customer) => (
-                  <TableRow key={customer.id}>
+                  <TableRow key={customer._id}>
+                    <TableCell>{customer.firstname}</TableCell>
                     <TableCell>{customer.firstname}</TableCell>
                     <TableCell>{customer.lastname}</TableCell>
                     <TableCell>{customer.phonenumber}</TableCell>
@@ -163,6 +138,3 @@ const Customerlist = () => {
 };
 
 export default Customerlist;
-
-//create a function to handle onclick where the function gets the id and link parsing it to the next function handle submit
-// which will perform a get requests for that specific user and then using that perfom an update request.
